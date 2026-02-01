@@ -1,6 +1,24 @@
+using Microsoft.EntityFrameworkCore;
+using MInimarketDaniela_Backend.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
+const string CONNECTION_STRING = "DefaultConnection";
+var connectionString = builder.Configuration.GetConnectionString(CONNECTION_STRING);
+
 // Add services to the container.
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy => policy.WithOrigins("http://localhost:3000")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+});
+
+builder.Services.AddDbContext<MInimarketDaniela_Backend.DataAccess.MinimarketContext>(options => options.UseNpgsql(connectionString));
+
+builder.Services.AddScoped<IProductService, ProductService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
