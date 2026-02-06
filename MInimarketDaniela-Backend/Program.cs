@@ -21,6 +21,7 @@ builder.Services.AddDbContext<MInimarketDaniela_Backend.DataAccess.MinimarketCon
 
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ISalesService, SalesService>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
