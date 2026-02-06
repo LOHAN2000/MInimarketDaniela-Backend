@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MInimarketDaniela_Backend.Services;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,8 +20,13 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContext<MInimarketDaniela_Backend.DataAccess.MinimarketContext>(options => options.UseNpgsql(connectionString));
 
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

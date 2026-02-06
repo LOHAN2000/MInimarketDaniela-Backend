@@ -70,6 +70,11 @@ namespace MInimarketDaniela_Backend.Services
 
             if (existing) throw new InvalidOperationException($"A product with barcode {product.Barcode} already exists.");
 
+            bool categoryExists = await _context.Categories
+                .AnyAsync(c => c.Id == product.CategoryId);
+
+            if (!categoryExists) throw new KeyNotFoundException($"Category with ID {product.CategoryId} not found.");
+
             product.CreatedAt = DateTime.UtcNow;
             product.UpdatedAt = DateTime.UtcNow;
             product.CreatedBy = "Admin";
