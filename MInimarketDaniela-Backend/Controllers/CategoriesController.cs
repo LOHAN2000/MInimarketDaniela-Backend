@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MInimarketDaniela_Backend.Models.DataModels;
 using MInimarketDaniela_Backend.Services;
 
@@ -6,6 +7,7 @@ namespace MInimarketDaniela_Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CategoriesController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
@@ -16,12 +18,14 @@ namespace MInimarketDaniela_Backend.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin, Cajero")]
         public async Task<IActionResult> GetCategories()
         {
             var categories = await _categoryService.GetCategoriesAsync();
             return Ok(categories);
         }
 
+        [Authorize(Roles = "Admin, Cajero")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCategoryById(int id)
         {
@@ -37,6 +41,7 @@ namespace MInimarketDaniela_Backend.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateCategory([FromBody] Category category)
         {
             try
@@ -51,6 +56,7 @@ namespace MInimarketDaniela_Backend.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateCategory(int id, [FromBody] Category category)
         {
             try
@@ -69,6 +75,7 @@ namespace MInimarketDaniela_Backend.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
             try

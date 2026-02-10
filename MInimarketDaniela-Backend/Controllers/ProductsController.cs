@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MInimarketDaniela_Backend.Models.DataModels;
 using MInimarketDaniela_Backend.Services;
 
@@ -6,6 +7,7 @@ namespace MInimarketDaniela_Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
@@ -16,6 +18,7 @@ namespace MInimarketDaniela_Backend.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin, Cajero")]
         public async Task<IActionResult> GetProducts()
         {
             var products = await _productService.GetProductsAsync();
@@ -23,6 +26,7 @@ namespace MInimarketDaniela_Backend.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin, Cajero")]
         public async Task<IActionResult> GetProductById(int id)
         {
             try
@@ -37,6 +41,7 @@ namespace MInimarketDaniela_Backend.Controllers
         }
 
         [HttpGet("search/{term}")]
+        [Authorize(Roles = "Admin, Cajero")]
         public async Task<IActionResult> Search(string term)
         {
             try
@@ -51,6 +56,7 @@ namespace MInimarketDaniela_Backend.Controllers
         }
 
         [HttpGet("barcode/{barcode}")]
+        [Authorize(Roles = "Admin, Cajero")]
         public async Task<IActionResult> GetproductByBarcode(string barcode)
         {
             try
@@ -65,6 +71,7 @@ namespace MInimarketDaniela_Backend.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody] Product product)
         {
             try
@@ -81,6 +88,7 @@ namespace MInimarketDaniela_Backend.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(int id, [FromBody] Product product)
         {
             try
@@ -95,6 +103,7 @@ namespace MInimarketDaniela_Backend.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             try
