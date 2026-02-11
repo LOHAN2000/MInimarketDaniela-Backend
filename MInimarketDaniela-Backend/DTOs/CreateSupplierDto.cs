@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MInimarketDaniela_Backend.Models.DataModels
+namespace MInimarketDaniela_Backend.DTOs
 {
-    public class Supplier : BaseEntity
+    public class CreateSupplierDto
     {
         [Required]
         public string RUC { get; set; } = string.Empty;
@@ -11,15 +11,16 @@ namespace MInimarketDaniela_Backend.Models.DataModels
         public string BussinessName { get; set; } = string.Empty;
 
         public string TradeName { get; set; } = string.Empty;
-
         public string Address { get; set; } = string.Empty;
-
         public string Phone { get; set; } = string.Empty;
 
         [EmailAddress]
         public string Email { get; set; } = string.Empty;
+    }
 
-
-        public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+    public class UpdateSupplierDto : CreateSupplierDto
+    {
+        [Required]
+        public int Id { get; set; }
     }
 }
