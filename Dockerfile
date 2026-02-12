@@ -4,7 +4,7 @@ WORKDIR /src
 
 # Copiar el archivo de proyecto y restaurar dependencias
 COPY ["MInimarketDaniela-Backend/MInimarketDaniela-Backend.csproj", "MInimarketDaniela-Backend/"]
-RUN dotnet restore "MInimarketDaniela_Backend.csproj"
+RUN dotnet restore "MInimarketDaniela-Backend.csproj"
 
 # Copiar todo el resto del código
 COPY . .
