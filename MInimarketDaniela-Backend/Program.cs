@@ -5,6 +5,8 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MInimarketDaniela_Backend.DTOs;
+using Refit;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -45,7 +47,17 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddRefitClient<IDecolectaApi>()
+    .ConfigureHttpClient(c =>
+    {
+        c.BaseAddress = new Uri("https://api.decolecta.com/v1");
 
+        var token = builder.Configuration["Decolecta:Token"];
+        c.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+    }).AddStandardResilienceHandler();
+
+builder.Services.AddScoped<ISunatService, SunatService>();
+builder.Services.AddScoped<ISupplierService, SupplierService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ISalesService, SalesService>();

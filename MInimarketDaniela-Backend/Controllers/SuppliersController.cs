@@ -11,10 +11,12 @@ namespace MInimarketDaniela_Backend.Controllers
     public class SuppliersController : ControllerBase
     {
         private readonly ISupplierService _supplierService;
+        private readonly ISunatService _sunatService;
 
-        public SuppliersController(ISupplierService suppplierService)
+        public SuppliersController(ISupplierService suppplierService, ISunatService sunatService)
         {
             _supplierService = suppplierService;
+            _sunatService = sunatService;
         }
 
         [HttpGet]
@@ -22,6 +24,7 @@ namespace MInimarketDaniela_Backend.Controllers
         public async Task<IActionResult> GetAll()
         {
             var providers = await _supplierService.GetAllAsync();
+            return Ok(providers);
         }
 
         [HttpGet("{id}")]
@@ -76,6 +79,7 @@ namespace MInimarketDaniela_Backend.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
         [HttpDelete("{id}")]
         [Authorize (Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
@@ -94,5 +98,22 @@ namespace MInimarketDaniela_Backend.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("sunat/{ruc}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetSunatInfo(string ruc)
+        {
+            try
+            {
+                var info = await _sunatService.ConsultaRucAsync(ruc);
+                return Ok(info);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
     }
 }
