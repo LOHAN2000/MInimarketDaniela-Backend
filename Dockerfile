@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 # Copiar el archivo de proyecto y restaurar dependencias
-COPY ["MInimarketDaniela_Backend.csproj", "MInimarketDaniela-Backend/"]
+COPY ["MInimarketDaniela-Backend/MInimarketDaniela_Backend.csproj", "MInimarketDaniela-Backend/"]
 RUN dotnet restore "MInimarketDaniela_Backend.csproj"
 
 # Copiar todo el resto del código
