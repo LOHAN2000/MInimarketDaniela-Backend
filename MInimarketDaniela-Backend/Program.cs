@@ -11,6 +11,16 @@ using Refit;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()    // Permite conexión desde cualquier URL (Vercel, Localhost, etc.)
+              .AllowAnyMethod()    // Permite GET, POST, PUT, DELETE
+              .AllowAnyHeader();   // Permite enviar Tokens en el header
+    });
+});
+
 const string CONNECTION_STRING = "DefaultConnection";
 var connectionString = builder.Configuration.GetConnectionString(CONNECTION_STRING);
 
@@ -111,6 +121,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAll");
 
 app.UseAuthorization();
 
