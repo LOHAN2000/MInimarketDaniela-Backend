@@ -9,14 +9,14 @@ RUN dotnet restore "MInimarketDaniela_Backend.csproj"
 # Copiar todo el resto del código
 COPY . .
 WORKDIR "/src/."
-RUN dotnet build "MInimarketDaniela_Backend.csproj" -c Release -o /app/build
+RUN dotnet build "MInimarketDaniela-Backend.csproj" -c Release -o /app/build
 
 # Publicar la aplicación
 FROM build AS publish
-RUN dotnet publish "MInimarketDaniela_Backend.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "MInimarketDaniela-Backend.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 # 2. Usar la imagen de ejecución (más ligera) para correr la app
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "MInimarketDaniela_Backend.dll"]
+ENTRYPOINT ["dotnet", "MInimarketDaniela-Backend.dll"]
