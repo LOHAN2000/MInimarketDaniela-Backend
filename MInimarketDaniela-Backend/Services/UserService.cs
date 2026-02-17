@@ -25,7 +25,7 @@ namespace MInimarketDaniela_Backend.Services
         {
             if (string.IsNullOrWhiteSpace(userDto.Email) || string.IsNullOrWhiteSpace(userDto.Username) || string.IsNullOrWhiteSpace(userDto.Name) || string.IsNullOrWhiteSpace(userDto.LastName) || string.IsNullOrWhiteSpace(userDto.Password))
             {
-                throw new ArgumentException("Please fill all required fields"); 
+                throw new ArgumentException("Please fill out all required fields"); 
             }
 
             var userExists = await _context.Users.AnyAsync(u => u.Username == userDto.Username || u.Email == userDto.Email);
