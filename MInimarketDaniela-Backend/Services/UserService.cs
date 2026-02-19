@@ -58,6 +58,8 @@ namespace MInimarketDaniela_Backend.Services
 
         public async Task<string> LoginAsync(LoginDto loginDto)
         {
+            if (string.IsNullOrWhiteSpace(loginDto.Username) || string.IsNullOrWhiteSpace(loginDto.Password)) throw new ArgumentException("Please fill out all required fields.")
+
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == loginDto.Username && !u.IsDeleted);
 
             if (user == null) throw new KeyNotFoundException("User or password wrong.");
