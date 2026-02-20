@@ -77,8 +77,9 @@ namespace MInimarketDaniela_Backend.Services
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Name, user.Name),
                 new Claim(ClaimTypes.Role, user.Role),
+                new Claim("Username", user.Username),
                 new Claim("LastName", user.LastName),
                 new Claim("Email", user.Email)
             };
