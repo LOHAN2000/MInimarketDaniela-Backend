@@ -52,8 +52,7 @@ namespace MInimarketDaniela_Backend.Controllers
                 return CreatedAtAction(nameof(GetById), new
                 {
                     id = createdProvider.Id,
-                    createdProvider
-                });
+                }, createdProvider);
             }
             catch (InvalidOperationException ex)
             {
