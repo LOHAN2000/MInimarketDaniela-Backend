@@ -26,8 +26,10 @@ namespace MInimarketDaniela_Backend.Services
         public async Task<Product?> GetProductByIdAsync(int id)
         {
             var product = await _context.Products
+                .Where(p => p.Id == id && !p.IsDeleted)
+                .Include(p => p.Category)
                 .Include(p => p.Supplier)
-                .FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted);
+                .FirstOrDefaultAsync();
 
             if (product == null) throw new KeyNotFoundException($"Product with ID {id} not found.");
 

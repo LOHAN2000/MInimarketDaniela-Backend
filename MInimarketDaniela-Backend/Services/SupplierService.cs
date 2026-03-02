@@ -53,7 +53,8 @@ namespace MInimarketDaniela_Backend.Services
                 TradeName = dto.TradeName,
                 Address = dto.Address,
                 Phone = dto.Phone,
-                Email = dto.Email,
+                Region = dto.Region,
+                City = dto.City,
 
                 CreatedAt = DateTime.UtcNow,
                 CreatedBy = cajeroActual,
@@ -81,8 +82,9 @@ namespace MInimarketDaniela_Backend.Services
             supplier.BussinessName = dto.BussinessName;
             supplier.TradeName = dto.TradeName;
             supplier.Phone = dto.Phone;
-            supplier.Email = dto.Email;
             supplier.Address = dto.Address;
+            supplier.Region = dto.Region;
+            supplier.City = dto.City;
 
             supplier.UpdatedAt = DateTime.UtcNow;
             supplier.UpdatedBy = usuarioActual;
