@@ -28,7 +28,8 @@ namespace MInimarketDaniela_Backend.Controllers
                 {
                     message = "Venta exitosa",
                     ticketCode = sale.TicketCode,
-                    total = sale.Total
+                    total = sale.Total,
+                    sale
                 });
             }
             catch (Exception ex)
