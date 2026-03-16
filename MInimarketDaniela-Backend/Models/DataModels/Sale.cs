@@ -7,6 +7,11 @@ namespace MInimarketDaniela_Backend.Models.DataModels
         public string TicketCode { get; set; } = string.Empty;
 
         [Column(TypeName = "decimal(18,2)")]
+
+        public decimal AmountPaid { get; set; }
+
+        public decimal ChangeGiven { get; set; }
+
         public decimal Total { get; set; }
 
         public string PaymentMethod { get; set; } = string.Empty;

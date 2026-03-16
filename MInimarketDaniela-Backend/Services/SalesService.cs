@@ -2,16 +2,18 @@
 using MInimarketDaniela_Backend.DataAccess;
 using MInimarketDaniela_Backend.DTOs;
 using MInimarketDaniela_Backend.Models.DataModels;
+using System.Security.Claims; 
 
 namespace MInimarketDaniela_Backend.Services
 {
     public class SalesService : ISalesService
     {
         private readonly MinimarketContext _context;
-
-        public SalesService(MinimarketContext context)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public SalesService(MinimarketContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<Sale> CreateSaleAsync(CreateSaleDto saleDto)
@@ -25,9 +27,11 @@ namespace MInimarketDaniela_Backend.Services
                     TicketCode = $"T-{DateTime.UtcNow.Ticks.ToString().Substring(10)}",
                     PaymentMethod = saleDto.PaymentMethod,
                     UserId = saleDto.UserId,
+                    AmountPaid = saleDto.AmountPaid,
+                    ChangeGiven = saleDto.ChangeGiven,
 
                     CreatedAt = DateTime.UtcNow,
-                    CreatedBy = "system",
+                    CreatedBy = ObtenerUsuarioActual(),
                     IsDeleted = false
                 };
 
@@ -52,7 +56,7 @@ namespace MInimarketDaniela_Backend.Services
                         Quantity = item.Quantity,
                         UnitPrice = product.Price,
                         SubTotal = product.Price * item.Quantity,
-                        CreatedBy = "Cajero",
+                        CreatedBy = ObtenerUsuarioActual(),
                     };
 
                     grandTotal += detail.SubTotal;
@@ -86,6 +90,12 @@ namespace MInimarketDaniela_Backend.Services
             if (ticket == null) throw new Exception($"Venta con código de ticket {ticketCode} no encontrada.");
 
             return ticket;
+        }
+
+        private string ObtenerUsuarioActual()
+        {
+            var user = _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.Name);
+            return user ?? "system";
         }
     }
 }
