@@ -25,6 +25,7 @@ namespace MInimarketDaniela_Backend.Services
             var startOfLastMonthUtc = startOfMonthUtc.AddMonths(-1);
 
             var allSales = await _context.Sales
+                .Include(s => s.SaleDetails)
                 .Where(s => !s.IsDeleted && s.CreatedAt >= startOfLastMonthUtc)
                 .ToListAsync();
 
@@ -61,6 +62,35 @@ namespace MInimarketDaniela_Backend.Services
             stats.Monthly.ProductosBajos = lowStockCount;
             stats.Monthly.IngresosCambio = CalcularPorcentaje(stats.Monthly.Ingresos, lastMonthSales.Sum(s => s.Total));
             stats.Monthly.VentasCambio = (int)CalcularPorcentaje(stats.Monthly.Ventas, lastMonthSales.Count);
+
+            var topProducts = allSales.Where(s => s.CreatedAt >= startOfMonthUtc)
+                .SelectMany(s => s.SaleDetails)
+                .GroupBy(sd => sd.ProductName)
+                .Select(g => new TopProductDto
+                {
+                    Name = g.Key,
+                    QuantitySold = g.Sum(sd => sd.Quantity)
+                })
+                .OrderByDescending(p => p.QuantitySold)
+                .Take(5)
+                .ToList();
+
+            stats.TopProducts = topProducts;
+
+            var chartData = new List<ChartDataDto>();
+            for (int i = 6; i >= 0; i--)
+            {
+                var date = todayUtc.AddDays(-i);
+                var daySales = allSales.Where(s => s.CreatedAt.Date == date).Sum(s => s.Total);
+
+                chartData.Add(new ChartDataDto
+                {
+                    DateLabel = date.ToString("dd/MM"),
+                    TotalSales = daySales
+                });
+            }
+
+            stats.ChartData = chartData;
 
             return stats;
         }
